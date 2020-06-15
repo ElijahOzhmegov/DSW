@@ -42,9 +42,46 @@ Was given a csv file `Exam-1.csv`, where as separator is used semicolon. The str
  $ Amount: num  149.62 2.69 378.66 123.5 69.99 ...
  $ Class : int  0 0 0 0 0 0 0 0 0 0 ...
     ```
-As you can see it has 227 846 observations and 31 variables and all of them are numeric. One of them `Class` is a target variable, so in the future it will be mapped in more human readable form. Also it is important to mention that variables are pseudo centered and normally distributed. 
+As you can see it has 227 846 observations and 31 variables and all of them are numeric. One of them `Class` is a target variable, where 0 means `correct` and 1 means `fraud`, so in the future it will be mapped in more human readable form. Also it is important to mention that variables are pseudo centered and normally distributed, besides that data set is severely unbalanced, it has around 400 entries labeled as `fraud`. 
 
 1. **A brief introduction to the machine learning task**
-As was mentioned earlier variable `Class` is the target variable and the main task is correctly distinguish `fraud` (1) and `correct` (0).
+As was mentioned earlier variable `Class` is the target variable and the main task is correctly distinguish `fraud` (1) and `correct` (0). The important part in here is that we have a priority to classify potential `fraud` entries over `correct` ones, so in other words to classify potential `fraud`s correctly is more important, than classify `correct`s. At the same time if model labels everything as `fraud`, it does not bring much use. So we need carefully think about a parameter optimization, but for now we will be focused at the recall.
+
+1. **A few words about common structure of the report**
+This report will follow the points in the given `pdf` paper `Exam-1.pdf` and will be mainly divided in chapters corresponding to the tasks, sometimes it will highlight certain notes. At the end it will have a conclusion part.
 
 ### 1. Task: Basic Workflow
+1. **Import the data provided in Moodle into RapidMiner**
+During the importing provided data set `Exam-1.csv` into RapidMiner there was labeled a variable `Class` and chosen type as binominal.
+    <figure class="image" align="center">
+      <img src="pics/import.png" alt="Figure 1: data set importing">
+      <figcaption>Figure 1: data set importing</figcaption>
+    </figure>
+
+1. **Do some basic data preparation:**
+     * Identify and mark target label:
+        As you can see in the `figure 1` it is already done.
+     * Substitute target values to *correct* and *fraud*:
+To substitute in the target variable values to *correct* and *fraud* was used operator `Map`.
+    <figure class="image" align="center">
+      <img src="pics/substituting.png" alt="Figure 2: value substitution">
+      <figcaption>Figure 2: value substitution</figcaption>
+    </figure>
+1. **Take 30% of the data as (stratified) holdout for testing**
+It is expected that when we find the best machine learning approach, we will test it with 30% of the data.
+    <figure class="image" align="center" >
+      <img src="pics/spliting.png" alt="Figure 3: spliting data">
+      <figcaption>Figure 3: spliting data</figcaption>
+    </figure>
+1. **Compare the performance of three suitable machine learning algorithms**
+Let us start almost interesting part of the report.
+    1. The first model is a well-known **Decision Tree** model:
+    <figure class="image" align="center" >
+      <img src="pics/simple_decision_tree.png" alt="Figure 4: Decision Tree (Outer pipeline)">
+      <figcaption>Figure 4: Decision Tree (Outer Pipeline)</figcaption>
+    </figure>
+On this stage it is important to note that in the current section all machine learning Outer Pipelines are the same, so in the future in the current section we will not highlight Outer Pipelines. As you can see in the `figure 4` there were used two processes `Import` (`figure 3`) and `Preprocess` (`figure 2`) that were created according to the requirements in the previous sections of the current part. Also, you should draw attention to the `Store` blocks named *Store Model* and *Store validation* that have self-explanatory names.
+    <figure class="image" align="center" >
+      <img src="pics/simple_decistion_tree_2.png" alt="Figure 5: Decision Tree (Inner pipeline)">
+      <figcaption>Figure 5: Decision Tree (Inner pipeline)</figcaption>
+    </figure>
